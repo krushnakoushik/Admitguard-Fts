@@ -362,6 +362,399 @@
         .field-success .field-input { border-color: var(--success) !important; }
         .field-warning .field-input { border-color: var(--warning) !important; background: rgba(245,166,35,0.05) !important; }
 
+        /* Success Overlay */
+        #success-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 17, 23, 0.95);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .overlay-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 48px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .overlay-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 24px;
+        }
+
+        .icon-success { background: rgba(34,201,122,0.1); color: var(--success); }
+        .icon-warning { background: rgba(245,166,35,0.1); color: var(--warning); }
+
+        .overlay-title {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .overlay-msg {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .overlay-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .overlay-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+        }
+
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn-secondary { background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--border); }
+
+        /* Audit Log Styles */
+        .audit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 32px;
+        }
+
+        .audit-title-group h2 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .audit-title-group p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .audit-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .action-btn:hover { background: var(--border); }
+        .action-btn.danger:hover { background: rgba(239,68,68,0.1); border-color: var(--danger); color: var(--danger); }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px 14px 10px 36px;
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filter-select {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px 14px;
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .results-count {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        /* Table */
+        .table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .audit-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .audit-table th {
+            background: var(--bg-elevated);
+            text-align: left;
+            padding: 14px 20px;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .audit-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .audit-table tr:last-child td { border-bottom: none; }
+        .audit-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-success { background: rgba(34,201,122,0.1); color: var(--success); }
+        .badge-warning { background: rgba(245,166,35,0.1); color: var(--warning); }
+        .badge-danger { background: rgba(239,68,68,0.1); color: var(--danger); }
+        .badge-muted { background: var(--bg-input); color: var(--text-muted); }
+
+        .view-btn {
+            padding: 6px 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .view-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+            position: relative;
+        }
+
+        .modal-header {
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+
+        .modal-id {
+            font-family: var(--font-heading);
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .modal-title {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .detail-item label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .detail-item span {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .exception-detail-box {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .exception-detail-box h4 {
+            font-family: var(--font-heading);
+            font-size: 13px;
+            color: var(--warning);
+            margin-bottom: 8px;
+        }
+
+        .exception-detail-box p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .flag-box {
+            background: rgba(239,68,68,0.05);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            color: var(--danger);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+            opacity: 0.3;
+        }
+
+        .empty-text {
+            color: var(--text-secondary);
+            font-size: 16px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
         .helper-text {
             font-size: 11px;
             color: var(--text-muted);
@@ -818,8 +1211,76 @@
 
         <!-- Panel 2: Audit Log -->
         <div id="audit-log" class="panel">
-            <div class="placeholder-panel">
-                Audit log coming in Sprint 3
+            <div class="audit-header">
+                <div class="audit-title-group">
+                    <h2>Audit Log</h2>
+                    <p id="audit-subtitle">0 records total · 0 flagged</p>
+                </div>
+                <div class="audit-actions">
+                    <button class="action-btn" onclick="exportCSV()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                        Export CSV
+                    </button>
+                    <button class="action-btn" onclick="exportJSON()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                        Export JSON
+                    </button>
+                    <button class="action-btn danger" onclick="clearAllRecords()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        Clear All
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-label">Total Records</div>
+                    <div class="stat-value" id="stat-total">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Flagged</div>
+                    <div class="stat-value" id="stat-flagged">0</div>
+                    <div class="stat-sub" id="stat-flagged-pct">0% of total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Avg. Score</div>
+                    <div class="stat-value" id="stat-avg">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Common Exception</div>
+                    <div class="stat-value" id="stat-common" style="font-size: 16px; margin-top: 8px;">None</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Clean Subs</div>
+                    <div class="stat-value" id="stat-clean">0</div>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="search-input-wrapper">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input type="text" id="audit-search" class="search-input" placeholder="Search by name, email, or record ID..." oninput="renderAuditLog()">
+                </div>
+                <select id="filter-status" class="filter-select" onchange="renderAuditLog()">
+                    <option value="all">All Records</option>
+                    <option value="flagged">Flagged Only</option>
+                    <option value="clean">Clean Records</option>
+                    <option value="exceptions">With Exceptions</option>
+                </select>
+                <select id="sort-order" class="filter-select" onchange="renderAuditLog()">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="score-high">Score High–Low</option>
+                    <option value="score-low">Score Low–High</option>
+                </select>
+                <div class="results-count" id="results-count">Showing 0 of 0 records</div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container" id="audit-table-container">
+                <!-- Table rendered by JS -->
             </div>
         </div>
 
@@ -834,6 +1295,50 @@
     <footer class="footer">
         AdmitGuard v1.0 · Built with Google AI Studio · Data stored locally
     </footer>
+
+    <!-- Success Overlay -->
+    <div id="success-overlay">
+        <div class="overlay-card">
+            <div id="overlay-icon-container" class="overlay-icon"></div>
+            <h2 id="overlay-title" class="overlay-title"></h2>
+            <p id="overlay-msg" class="overlay-msg"></p>
+            <div class="overlay-actions">
+                <button class="overlay-btn btn-primary" onclick="resetFormAndCloseOverlay()">Submit Another</button>
+                <button class="overlay-btn btn-secondary" onclick="viewAuditLogFromOverlay()">View Audit Log</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detail-modal" class="modal-overlay" onclick="if(event.target === this) closeModal()">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-id" id="modal-record-id"></div>
+                <h2 class="modal-title" id="modal-candidate-name"></h2>
+            </div>
+            
+            <div id="modal-flag-box" class="flag-box" style="display:none">
+                <span>⚠</span> <span id="modal-flag-reason"></span>
+            </div>
+
+            <div class="detail-grid" id="modal-detail-grid">
+                <!-- Fields injected here -->
+            </div>
+
+            <div id="modal-exceptions-section">
+                <h3 class="form-label-small" style="margin-bottom:12px">Exceptions</h3>
+                <div id="modal-exceptions-list"></div>
+            </div>
+
+            <div style="margin-top:32px; display:flex; justify-content:space-between; align-items:center;">
+                <div class="score-left" style="flex-direction:row; gap:12px; align-items:center">
+                    <div id="modal-score-value" class="score-value" style="font-size:32px">0</div>
+                    <div class="score-label">Eligibility Score</div>
+                </div>
+                <button class="overlay-btn btn-secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // PART A — RULES CONFIGURATION OBJECT
@@ -875,10 +1380,12 @@
         };
 
         // State
-        let submittedEmails = ["test@example.com"]; // Mock existing data
+        let auditRecords = JSON.parse(localStorage.getItem('admitguard_records') || '[]');
+        let submittedEmails = auditRecords.map(r => r.fields.email);
         let currentScoreMode = "pct";
         let fieldStates = {}; // Stores { passed: bool, isException: bool, rationaleValid: bool }
         let currentScore = 0;
+        let overlayTimeout = null;
 
         // Tab Switching
         function switchTab(panelId, btn) {
@@ -887,6 +1394,10 @@
             
             document.getElementById(panelId).classList.add('active');
             btn.classList.add('active');
+
+            if (panelId === 'audit-log') {
+                renderAuditLog();
+            }
         }
 
         // Helper: Debounce
@@ -1271,12 +1782,21 @@
         function handleSubmit(e) {
             e.preventDefault();
             
-            // Final validation check
             const allFields = [
                 "name", "email", "phone", "aadhaar", "qualification", 
                 "age", "grad_year", "score", "test_score", "interview", "offer_letter"
             ];
-            allFields.forEach(f => validateField(f, document.getElementById(f).value, true));
+
+            // Final validation check
+            let hasStrictError = false;
+            allFields.forEach(f => {
+                validateField(f, document.getElementById(f).value, true);
+                if (fieldStates[f] && fieldStates[f].isStrict && !fieldStates[f].passed) {
+                    hasStrictError = true;
+                }
+            });
+
+            if (hasStrictError) return false;
 
             const btn = document.getElementById('submitBtn');
             if (btn.disabled) return false;
@@ -1288,22 +1808,380 @@
             spinner.style.display = 'block';
             text.innerText = 'Processing...';
 
+            // Collect Exceptions
+            const exceptions = [];
+            const softViolations = [];
+            allFields.forEach(f => {
+                const state = fieldStates[f];
+                if (state && !state.passed && !state.empty && !state.isStrict) {
+                    softViolations.push(f);
+                    if (state.isException) {
+                        const group = document.getElementById(`group-${f}`);
+                        const rationale = group.querySelector('.rationale-textarea').value;
+                        const activeChip = group.querySelector('.keyword-chip.active');
+                        const keyword = activeChip ? activeChip.getAttribute('data-keyword') : "None";
+                        
+                        const rule = RULES_CONFIG.soft.find(r => r.field === f);
+                        exceptions.push({
+                            field: f,
+                            rule: rule ? rule.type : "soft_rule",
+                            rationale: rationale,
+                            keyword_used: keyword
+                        });
+                    }
+                }
+            });
+
+            const isFlagged = exceptions.length > RULES_CONFIG.exception.max_exceptions_before_flag;
+            const flagReason = isFlagged ? `More than ${RULES_CONFIG.exception.max_exceptions_before_flag} exceptions used — requires manager review` : null;
+
+            // Aadhaar Masking
+            const fullAadhaar = document.getElementById('aadhaar').value;
+            const maskedAadhaar = `XXXX-XXXX-${fullAadhaar.slice(-4)}`;
+
+            const record = {
+                id: crypto.randomUUID(),
+                cohort: RULES_CONFIG.cohort,
+                rulesVersion: RULES_CONFIG.version,
+                timestamp: new Date().toISOString(),
+                submittedBy: "Operator",
+                fields: {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    aadhaar: maskedAadhaar,
+                    age: document.getElementById('age').value,
+                    qualification: document.getElementById('qualification').value,
+                    grad_year: document.getElementById('grad_year').value,
+                    score: document.getElementById('score').value,
+                    score_mode: currentScoreMode,
+                    test_score: document.getElementById('test_score').value,
+                    interview: document.getElementById('interview').value,
+                    offer_letter: document.getElementById('offer_letter').value
+                },
+                exceptions: exceptions,
+                eligibilityScore: currentScore,
+                flagged: isFlagged,
+                flagReason: flagReason,
+                strictViolations: [],
+                softViolations: softViolations
+            };
+
             setTimeout(() => {
-                alert('Candidate record submitted successfully!');
+                // Save to localStorage
+                auditRecords.unshift(record);
+                localStorage.setItem('admitguard_records', JSON.stringify(auditRecords));
+                submittedEmails.push(record.fields.email);
+
+                // Show Success Overlay
+                showSuccessOverlay(record);
+
                 btn.disabled = false;
                 spinner.style.display = 'none';
                 text.innerText = 'Submit Candidate Record';
-                
-                // Add email to submitted list
-                submittedEmails.push(document.getElementById('email').value);
-                
-                document.getElementById('admissionForm').reset();
-                fieldStates = {};
-                calculateEligibilityScore();
-                updateProgress();
-            }, 2000);
+            }, 1500);
 
             return false;
+        }
+
+        function showSuccessOverlay(record) {
+            const overlay = document.getElementById('success-overlay');
+            const iconContainer = document.getElementById('overlay-icon-container');
+            const title = document.getElementById('overlay-title');
+            const msg = document.getElementById('overlay-msg');
+
+            iconContainer.className = 'overlay-icon ' + (record.flagged ? 'icon-warning' : 'icon-success');
+            iconContainer.innerHTML = record.flagged ? '⚠' : '✓';
+            
+            if (record.flagged) {
+                title.innerText = "Record Submitted — Flagged for Review";
+                msg.innerText = `This record has ${record.exceptions.length} exceptions and requires manager approval before proceeding.`;
+            } else {
+                title.innerText = "Record Submitted Successfully";
+                msg.innerText = `Candidate: ${record.fields.name} · Score: ${record.eligibilityScore}/100 · Record ID: ${record.id.substring(0, 8)}`;
+            }
+
+            overlay.style.display = 'flex';
+
+            if (overlayTimeout) clearTimeout(overlayTimeout);
+            overlayTimeout = setTimeout(() => {
+                resetFormAndCloseOverlay();
+            }, 6000);
+        }
+
+        function resetFormAndCloseOverlay() {
+            document.getElementById('success-overlay').style.display = 'none';
+            document.getElementById('admissionForm').reset();
+            
+            // Clear exception UIs
+            document.querySelectorAll('.exception-section').forEach(el => el.remove());
+            
+            // Reset state
+            fieldStates = {};
+            currentScore = 0;
+            
+            // Reset UI classes
+            document.querySelectorAll('.form-group').forEach(g => {
+                g.classList.remove('field-error', 'field-success', 'field-warning');
+            });
+            
+            calculateEligibilityScore();
+            updateProgress();
+            if (overlayTimeout) clearTimeout(overlayTimeout);
+        }
+
+        function viewAuditLogFromOverlay() {
+            document.getElementById('success-overlay').style.display = 'none';
+            switchTab('audit-log', document.querySelectorAll('.nav-tab')[1]);
+            if (overlayTimeout) clearTimeout(overlayTimeout);
+        }
+
+        // Audit Log Rendering & Logic
+        function renderAuditLog() {
+            const search = document.getElementById('audit-search').value.toLowerCase();
+            const filter = document.getElementById('filter-status').value;
+            const sort = document.getElementById('sort-order').value;
+
+            let filtered = auditRecords.filter(r => {
+                const matchesSearch = r.fields.name.toLowerCase().includes(search) || 
+                                     r.fields.email.toLowerCase().includes(search) || 
+                                     r.id.toLowerCase().includes(search);
+                
+                let matchesFilter = true;
+                if (filter === 'flagged') matchesFilter = r.flagged;
+                else if (filter === 'clean') matchesFilter = !r.flagged && r.exceptions.length === 0;
+                else if (filter === 'exceptions') matchesFilter = r.exceptions.length > 0;
+
+                return matchesSearch && matchesFilter;
+            });
+
+            // Sort
+            filtered.sort((a, b) => {
+                if (sort === 'newest') return new Date(b.timestamp) - new Date(a.timestamp);
+                if (sort === 'oldest') return new Date(a.timestamp) - new Date(b.timestamp);
+                if (sort === 'score-high') return b.eligibilityScore - a.eligibilityScore;
+                if (sort === 'score-low') return a.eligibilityScore - b.eligibilityScore;
+                return 0;
+            });
+
+            updateAuditStats(filtered);
+
+            const container = document.getElementById('audit-table-container');
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📂</div>
+                        <div class="empty-text">No records yet. Submit your first candidate entry to see it here.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <table class="audit-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Candidate Name</th>
+                            <th>Email</th>
+                            <th>Score</th>
+                            <th>Exceptions</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            filtered.forEach(r => {
+                const date = new Date(r.timestamp);
+                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + 
+                                     ' · ' + date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                
+                const scoreClass = r.eligibilityScore >= 80 ? 'badge-success' : (r.eligibilityScore >= 50 ? 'badge-warning' : 'badge-danger');
+                const excCount = r.exceptions.length;
+                const excClass = excCount > 0 ? 'badge-warning' : 'badge-muted';
+                const statusClass = r.flagged ? 'badge-danger' : 'badge-success';
+                const statusText = r.flagged ? 'Flagged' : 'Clean';
+
+                html += `
+                    <tr>
+                        <td style="color: var(--text-secondary); font-size: 12px;">${formattedDate}</td>
+                        <td style="font-weight: 600;">${r.fields.name}</td>
+                        <td style="color: var(--text-secondary);">${r.fields.email}</td>
+                        <td><span class="badge ${scoreClass}">${r.eligibilityScore}</span></td>
+                        <td><span class="badge ${excClass}">${excCount} exceptions</span></td>
+                        <td><span class="badge ${statusClass}">${statusText}</span></td>
+                        <td><button class="view-btn" onclick="viewRecord('${r.id}')">View</button></td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+            document.getElementById('results-count').innerText = `Showing ${filtered.length} of ${auditRecords.length} records`;
+        }
+
+        function updateAuditStats(filtered) {
+            const total = auditRecords.length;
+            const flagged = auditRecords.filter(r => r.flagged).length;
+            const flaggedPct = total > 0 ? Math.round((flagged / total) * 100) : 0;
+            const avgScore = total > 0 ? Math.round(auditRecords.reduce((acc, r) => acc + r.eligibilityScore, 0) / total) : 0;
+            const clean = auditRecords.filter(r => !r.flagged && r.exceptions.length === 0).length;
+
+            // Common Exception
+            const excCounts = {};
+            auditRecords.forEach(r => {
+                r.exceptions.forEach(e => {
+                    excCounts[e.field] = (excCounts[e.field] || 0) + 1;
+                });
+            });
+            let commonExc = "None";
+            let maxCount = 0;
+            for (const field in excCounts) {
+                if (excCounts[field] > maxCount) {
+                    maxCount = excCounts[field];
+                    commonExc = field.charAt(0).toUpperCase() + field.slice(1).replace('_', ' ');
+                }
+            }
+
+            document.getElementById('audit-subtitle').innerText = `${total} records total · ${flagged} flagged`;
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-flagged').innerText = flagged;
+            document.getElementById('stat-flagged-pct').innerText = `${flaggedPct}% of total`;
+            document.getElementById('stat-avg').innerText = avgScore;
+            document.getElementById('stat-common').innerText = commonExc;
+            document.getElementById('stat-clean').innerText = clean;
+        }
+
+        function viewRecord(id) {
+            const r = auditRecords.find(rec => rec.id === id);
+            if (!r) return;
+
+            document.getElementById('modal-record-id').innerText = `Record ID: ${r.id}`;
+            document.getElementById('modal-candidate-name').innerText = r.fields.name;
+            
+            const flagBox = document.getElementById('modal-flag-box');
+            if (r.flagged) {
+                flagBox.style.display = 'flex';
+                document.getElementById('modal-flag-reason').innerText = r.flagReason;
+            } else {
+                flagBox.style.display = 'none';
+            }
+
+            const grid = document.getElementById('modal-detail-grid');
+            const fieldLabels = {
+                name: "Full Name", email: "Email", phone: "Phone", aadhaar: "Aadhaar",
+                age: "Age", qualification: "Qualification", grad_year: "Grad Year",
+                score: "Academic Score", test_score: "Test Score", interview: "Interview", offer_letter: "Offer Letter"
+            };
+
+            let gridHtml = '';
+            for (const key in r.fields) {
+                let val = r.fields[key];
+                if (key === 'score') val += r.fields.score_mode === 'pct' ? '%' : ' CGPA';
+                gridHtml += `
+                    <div class="detail-item">
+                        <label>${fieldLabels[key] || key}</label>
+                        <span>${val}</span>
+                    </div>
+                `;
+            }
+            gridHtml += `<div class="detail-item"><label>Cohort</label><span>${r.cohort} (v${r.rulesVersion})</span></div>`;
+            gridHtml += `<div class="detail-item"><label>Submitted By</label><span>${r.submittedBy}</span></div>`;
+            grid.innerHTML = gridHtml;
+
+            const excList = document.getElementById('modal-exceptions-list');
+            if (r.exceptions.length === 0) {
+                excList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">No exceptions used for this record.</p>';
+            } else {
+                excList.innerHTML = r.exceptions.map(e => `
+                    <div class="exception-detail-box">
+                        <h4>Field: ${e.field.toUpperCase()}</h4>
+                        <p><strong>Rationale:</strong> ${e.rationale}</p>
+                        <p style="margin-top:4px; font-size:11px; color: var(--success)"><strong>Keyword Used:</strong> ${e.keyword_used}</p>
+                    </div>
+                `).join('');
+            }
+
+            const modalScore = document.getElementById('modal-score-value');
+            modalScore.innerText = r.eligibilityScore;
+            if (r.eligibilityScore >= 80) modalScore.style.color = 'var(--success)';
+            else if (r.eligibilityScore >= 50) modalScore.style.color = 'var(--warning)';
+            else modalScore.style.color = 'var(--danger)';
+
+            document.getElementById('detail-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('detail-modal').style.display = 'none';
+        }
+
+        function clearAllRecords() {
+            if (confirm("Are you sure you want to clear all audit records? This action cannot be undone.")) {
+                auditRecords = [];
+                localStorage.setItem('admitguard_records', JSON.stringify([]));
+                submittedEmails = [];
+                renderAuditLog();
+            }
+        }
+
+        function exportJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(auditRecords, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", `admitguard-audit-${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function exportCSV() {
+            const headers = [
+                "Record ID", "Timestamp", "Cohort", "Candidate Name", "Email", "Phone", "Aadhaar (Masked)",
+                "Age", "Qualification", "Graduation Year", "Score", "Score Type", "Test Score", 
+                "Interview Status", "Offer Letter", "Eligibility Score", "Exceptions Count", 
+                "Exception Details", "Flagged", "Flag Reason"
+            ];
+
+            let csvContent = headers.join(",") + "\n";
+
+            auditRecords.forEach(r => {
+                const excDetails = r.exceptions.map(e => `${e.field}: ${e.rationale.replace(/,/g, ';')}`).join(" | ");
+                const row = [
+                    r.id,
+                    r.timestamp,
+                    r.cohort,
+                    `"${r.fields.name}"`,
+                    r.fields.email,
+                    r.fields.phone,
+                    r.fields.aadhaar,
+                    r.fields.age,
+                    r.fields.qualification,
+                    r.fields.grad_year,
+                    r.fields.score,
+                    r.fields.score_mode,
+                    r.fields.test_score,
+                    r.fields.interview,
+                    r.fields.offer_letter,
+                    r.eligibilityScore,
+                    r.exceptions.length,
+                    `"${excDetails}"`,
+                    r.flagged,
+                    `"${r.flagReason || ''}"`
+                ];
+                csvContent += row.join(",") + "\n";
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `admitguard-audit-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         // Initial call
