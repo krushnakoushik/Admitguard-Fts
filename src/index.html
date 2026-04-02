@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AdmitGuard — Admission Data Validation</title>
+    <title>AdmitGuard — Admission Validation System</title>
+    <meta name="description" content="AdmitGuard: Real-time admission data validation and compliance system">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 
@@ -1413,9 +1414,12 @@
             <button class="nav-tab" onclick="switchTab('audit-log', this)">Audit Log</button>
             <button class="nav-tab" onclick="switchTab('rules-config', this)">Rules Config</button>
         </div>
-        <div class="status-chip">
-            <div class="pulse-dot"></div>
-            System Active
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <button class="action-btn" style="border-radius: 50%; width: 32px; height: 32px; padding: 0; justify-content: center; font-size: 16px;" onclick="openHelpModal()">?</button>
+            <div class="status-chip">
+                <div class="pulse-dot"></div>
+                System Active
+            </div>
         </div>
     </nav>
 
@@ -1722,8 +1726,77 @@
     </main>
 
     <footer class="footer">
-        AdmitGuard v1.0 · Built with Google AI Studio · Data stored locally
+        AdmitGuard v1.0 · Deployed on GitHub Pages · Built with Google AI Studio · 2026
     </footer>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal-overlay" onclick="if(event.target === this) closeHelpModal()">
+        <div class="modal-card" style="max-width: 800px;">
+            <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 class="modal-title">System Help & Reference</h2>
+                <div class="nav-tabs" style="background: var(--bg-elevated);">
+                    <button class="nav-tab active" id="help-tab-1" onclick="switchHelpTab(1)">How to Use</button>
+                    <button class="nav-tab" id="help-tab-2" onclick="switchHelpTab(2)">Rules Reference</button>
+                </div>
+            </div>
+
+            <div id="help-content-1" class="help-tab-content">
+                <div style="font-size: 14px; line-height: 1.6; color: var(--text-secondary);">
+                    <h3 style="color: var(--text-primary); margin-bottom: 12px; font-family: var(--font-heading);">Operator Quick Guide</h3>
+                    <p style="margin-bottom: 16px;">AdmitGuard is designed to ensure 100% data compliance for candidate admissions. Follow these steps to process a record:</p>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                        <div>
+                            <h4 style="color: var(--accent); font-size: 12px; text-transform: uppercase; margin-bottom: 8px;">1. Data Entry</h4>
+                            <p style="margin-bottom: 12px;">Fill in all 11 required fields. The system validates each field as you type. Green borders indicate a "Clean" pass.</p>
+                            
+                            <h4 style="color: var(--warning); font-size: 12px; text-transform: uppercase; margin-bottom: 8px;">2. Handling Exceptions</h4>
+                            <p style="margin-bottom: 12px;">Amber borders indicate a "Soft Rule" violation (e.g., candidate is slightly over age). You can override these by toggling the "Rule Exception" switch and providing a valid rationale containing required keywords.</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--danger); font-size: 12px; text-transform: uppercase; margin-bottom: 8px;">3. Strict Blocks</h4>
+                            <p style="margin-bottom: 12px;">Red borders indicate a "Strict Rule" violation (e.g., invalid Aadhaar format). These <strong>cannot</strong> be overridden. The submit button will remain disabled until fixed.</p>
+                            
+                            <h4 style="color: var(--warning); font-size: 12px; text-transform: uppercase; margin-bottom: 8px;">4. Manager Flags</h4>
+                            <p>If a submission uses more than 2 exceptions, it is automatically "Flagged" for manager review. Flagged records appear in amber in the audit log.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="help-content-2" class="help-tab-content" style="display: none;">
+                <div class="table-container">
+                    <table class="audit-table" style="font-size: 12px;">
+                        <thead>
+                            <tr>
+                                <th>Field Name</th>
+                                <th>Rule Type</th>
+                                <th>Requirement</th>
+                                <th>Override?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Full Name</td><td>Strict</td><td>Min 2 chars, No numbers</td><td>No</td></tr>
+                            <tr><td>Email</td><td>Strict</td><td>Valid format, Unique</td><td>No</td></tr>
+                            <tr><td>Phone</td><td>Strict</td><td>10 digits, starts 6-9</td><td>No</td></tr>
+                            <tr><td>Aadhaar</td><td>Strict</td><td>12 digits, No same digits</td><td>No</td></tr>
+                            <tr><td>Qualification</td><td>Strict</td><td>Required selection</td><td>No</td></tr>
+                            <tr><td>Age</td><td>Soft</td><td>18–35 years</td><td>Yes</td></tr>
+                            <tr><td>Grad Year</td><td>Soft</td><td>2015–2025</td><td>Yes</td></tr>
+                            <tr><td>Academic Score</td><td>Soft</td><td>≥60% or ≥6.0 CGPA</td><td>Yes</td></tr>
+                            <tr><td>Screening Test</td><td>Soft</td><td>≥40 out of 100</td><td>Yes</td></tr>
+                            <tr><td>Interview Status</td><td>Strict</td><td>Not "Rejected"</td><td>No</td></tr>
+                            <tr><td>Offer Letter</td><td>Strict</td><td>Only if Interview Cleared</td><td>No</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="margin-top: 32px; text-align: right;">
+                <button class="overlay-btn btn-secondary" onclick="closeHelpModal()">Close Help</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Success Overlay -->
     <div id="success-overlay">
@@ -1775,31 +1848,19 @@
           cohort: "Cohort-2025",
           version: "1.0",
           strict: [
-            { field: "name",         type: "regex",    pattern: "^[a-zA-Z\\s]{2,}$",    
-              message: "Min 2 characters. No numbers or special characters allowed." },
-            { field: "email",        type: "email",    unique: true,                      
-              message: "Must be a valid email format. Duplicates are not allowed." },
-            { field: "phone",        type: "regex",    pattern: "^[6-9]\\d{9}$",         
-              message: "Must be exactly 10 digits and start with 6, 7, 8, or 9." },
-            { field: "aadhaar",      type: "regex",    pattern: "^\\d{12}$",             
-              message: "Must be exactly 12 digits. No spaces or letters." },
-            { field: "qualification",type: "required",                                    
-              message: "Please select a qualification from the dropdown." },
-            { field: "interview",    type: "not_value", blocked_value: "Rejected",        
-              message: "Candidate status is Rejected. Submission is blocked." },
-            { field: "offer_letter", type: "conditional", depends_on: "interview",        
-              required_value: "Cleared",                                                   
-              message: "Offer Letter can only be issued after interview is cleared." }
+            { field: "name", type: "regex", pattern: "^[a-zA-Z\\s]{2,}$", message: "Min 2 characters. No numbers or special characters allowed." },
+            { field: "email", type: "email", unique: true, message: "Must be a valid email format. Duplicates are not allowed." },
+            { field: "phone", type: "regex", pattern: "^[6-9]\\d{9}$", message: "Must be exactly 10 digits and start with 6, 7, 8, or 9." },
+            { field: "aadhaar", type: "regex", pattern: "^\\d{12}$", message: "Must be exactly 12 digits. No spaces or letters." },
+            { field: "qualification", type: "required", message: "Please select a qualification from the dropdown." },
+            { field: "interview", type: "not_value", blocked_value: "Rejected", message: "Candidate status is Rejected. Submission is blocked." },
+            { field: "offer_letter", type: "conditional", depends_on: "interview", required_value: "Cleared", message: "Offer Letter can only be issued after interview is cleared." }
           ],
           soft: [
-            { field: "age",          type: "range",    min: 18,   max: 35,               
-              message: "Age should be between 18–35 years." },
-            { field: "grad_year",    type: "range",    min: 2015, max: 2025,             
-              message: "Graduation year should be between 2015–2025." },
-            { field: "score",        type: "threshold",min_pct: 60, min_cgpa: 6.0,       
-              message: "Score should be ≥60% or ≥6.0 CGPA." },
-            { field: "test_score",   type: "threshold",min: 40,   max: 100,              
-              message: "Screening test score should be ≥40 out of 100." }
+            { field: "age", type: "range", min: 18, max: 35, message: "Age should be between 18–35 years." },
+            { field: "grad_year", type: "range", min: 2015, max: 2025, message: "Graduation year should be between 2015–2025." },
+            { field: "score", type: "threshold", min_pct: 60, min_cgpa: 6.0, message: "Score should be ≥60% or ≥6.0 CGPA." },
+            { field: "test_score", type: "threshold", min: 40, max: 100, message: "Screening test score should be ≥40 out of 100." }
           ],
           exception: {
             min_rationale_length: 30,
@@ -1819,7 +1880,6 @@
             auditRecords = JSON.parse(localStorage.getItem('admitguard_records') || '[]');
         } catch (e) {
             isPrivateMode = true;
-            console.warn("LocalStorage unavailable - falling back to in-memory storage.");
         }
 
         let submittedEmails = auditRecords.map(r => r.fields.email);
@@ -2961,6 +3021,21 @@
             }
         });
 
+        function openHelpModal() {
+            document.getElementById('help-modal').style.display = 'flex';
+        }
+
+        function closeHelpModal() {
+            document.getElementById('help-modal').style.display = 'none';
+        }
+
+        function switchHelpTab(tabIndex) {
+            document.getElementById('help-content-1').style.display = tabIndex === 1 ? 'block' : 'none';
+            document.getElementById('help-content-2').style.display = tabIndex === 2 ? 'block' : 'none';
+            document.getElementById('help-tab-1').classList.toggle('active', tabIndex === 1);
+            document.getElementById('help-tab-2').classList.toggle('active', tabIndex === 2);
+        }
+
         // Initial call
         calculateEligibilityScore();
         updateProgress();
@@ -2969,5 +3044,11 @@
         
         draftInterval = setInterval(saveDraft, 5000);
     </script>
+    <!-- 
+      AdmitGuard v1.0
+      Built: 2026-04-02
+      Rules Version: 1.0
+      Cohort: 2025
+    -->
 </body>
 </html>
