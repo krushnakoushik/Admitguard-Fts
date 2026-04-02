@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdmitGuard — Admission Data Validation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+        :root {
+            --bg-primary: #0F1117;
+            --bg-card: #1A1D27;
+            --bg-input: #13151F;
+            --bg-elevated: #20243A;
+            --accent: #4F6EF7;
+            --accent-hover: #3B56D4;
+            --success: #22C97A;
+            --warning: #F5A623;
+            --danger: #EF4444;
+            --text-primary: #F0F2FF;
+            --text-secondary: #8B91A8;
+            --text-muted: #4A5068;
+            --border: #2A2E45;
+            --border-focus: #4F6EF7;
+            --font-heading: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* Layout */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--accent);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            background: var(--bg-input);
+            padding: 4px;
+            border-radius: 30px;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: var(--font-heading);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: 0.2s ease;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-tab.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .status-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-elevated);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pulse-dot::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .main-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 24px 40px;
+        }
+
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        /* Hero Header */
+        .hero-header {
+            background: var(--bg-card);
+            padding: 32px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-label-small {
+            color: var(--accent);
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .hero-title {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .hero-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .progress-bar-bg {
+            flex: 1;
+            height: 3px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-text {
+            font-family: var(--font-heading);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent);
+            min-width: 35px;
+            text-align: right;
+        }
+
+        /* Eligibility Score Card */
+        .score-card {
+            background: linear-gradient(135deg, #1A1D27, #20243A);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .score-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .score-value {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 48px;
+            line-height: 1;
+        }
+
+        .score-label {
+            font-family: var(--font-heading);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .score-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+            max-width: 60%;
+        }
+
+        .metric-chip {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-family: var(--font-body);
+        }
+
+        .status-badge {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        /* Form Grid */
+        .admission-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .label-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .field-label {
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .required-star {
+            color: var(--danger);
+            margin-left: 2px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .field-input {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 14px;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        .field-input:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(79,110,247,0.15);
+        }
+
+        .field-input.error {
+            border-color: var(--danger);
+            background: rgba(239,68,68,0.05);
+        }
+
+        .field-input.success {
+            border-color: var(--success);
+        }
+
+        .helper-text {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .error-message {
+            font-size: 12px;
+            color: var(--danger);
+            display: none;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .success-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--success);
+            display: none;
+        }
+
+        /* Toggle for Academic Score */
+        .toggle-container {
+            display: flex;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px;
+            margin-bottom: 4px;
+        }
+
+        .toggle-btn {
+            padding: 2px 8px;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 3px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            grid-column: span 2;
+            height: 52px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Placeholder Panels */
+        .placeholder-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 60px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-family: var(--font-heading);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .admission-form {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            .submit-btn {
+                grid-column: span 1;
+            }
+            .score-card {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            .score-metrics {
+                justify-content: center;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-bar">
+        <div class="logo-area">
+            <svg class="logo-icon" viewBox="0 0 24 24">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+            </svg>
+            AdmitGuard
+        </div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('new-entry', this)">New Entry</button>
+            <button class="nav-tab" onclick="switchTab('audit-log', this)">Audit Log</button>
+            <button class="nav-tab" onclick="switchTab('rules-config', this)">Rules Config</button>
+        </div>
+        <div class="status-chip">
+            <div class="pulse-dot"></div>
+            System Active
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Panel 1: New Entry -->
+        <div id="new-entry" class="panel active">
+            <header class="hero-header">
+                <span class="form-label-small">Admission Form</span>
+                <h1 class="hero-title">Candidate Entry</h1>
+                <p class="hero-subtitle">All fields are validated in real-time. Strict rules cannot be overridden.</p>
+                <div class="progress-container">
+                    <div class="progress-bar-bg">
+                        <div id="progress-fill" class="progress-bar-fill"></div>
+                    </div>
+                    <span id="progress-percent" class="progress-text">0%</span>
+                </div>
+            </header>
+
+            <div class="score-card">
+                <div class="score-left">
+                    <div id="eligibility-score" class="score-value" style="color: var(--text-muted)">0</div>
+                    <div class="score-label">Eligibility Score</div>
+                </div>
+                <div class="score-metrics">
+                    <div class="metric-chip">Strict Rules: <span id="strict-passed">0</span>/7 passed</div>
+                    <div class="metric-chip">Soft Rules: <span id="soft-checked">0</span>/4 checked</div>
+                    <div class="metric-chip">Exceptions: 0 used</div>
+                    <div id="status-badge" class="metric-chip status-badge" style="color: var(--text-muted)">Status: Incomplete</div>
+                </div>
+            </div>
+
+            <form class="admission-form" id="admissionForm" onsubmit="return handleSubmit(event)">
+                <!-- Row 1 -->
+                <div class="form-group">
+                    <label class="field-label">Full Name<span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <input type="text" class="field-input" placeholder="Enter full name" required>
+                        <span class="success-icon">✓</span>
+                    </div>
+                    <span class="helper-text">Legal name as per documents</span>
+                    <div class="error-message">⚠ Invalid name format</div>
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Email Address<span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <input type="email" class="field-input" placeholder="name@example.com" required>
+                        <span class="success-icon">✓</span>
+                    </div>
+                    <span class="helper-text">Official communication email</span>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="form-group">
+                    <label class="field-label">Phone Number<span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <input type="tel" class="field-input" placeholder="10-digit mobile" required>
+                        <span class="success-icon">✓</span>
+                    </div>
+                    <span class="helper-text">10 digits, must start with 6–9</span>
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Aadhaar Number<span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <input type="text" class="field-input" placeholder="12-digit UID" required>
+                        <span class="success-icon">✓</span>
+                    </div>
+                    <span class="helper-text">12-digit unique identification</span>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="form-group">
+                    <label class="field-label">Age<span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <input type="number" class="field-input" placeholder="Years" required>
+                        <span class="success-icon">✓</span>
+                    </div>
+                    <span class="helper-text">Must be between 18–35 years</span>
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Qualification<span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <select class="field-input" required>
+                            <option value="" disabled selected>Select qualification</option>
+                            <option value="Graduate">Graduate</option>
+                            <option value="Post-Graduate">Post-Graduate</option>
+                            <option value="Diploma">Diploma</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <span class="helper-text">Highest completed degree</span>
+                </div>
+
+                <!-- Row 4 -->
+                <div class="form-group">
+                    <label class="field-label">Graduation Year<span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <input type="number" class="field-input" placeholder="YYYY" required>
+                        <span class="success-icon">✓</span>
+                    </div>
+                    <span class="helper-text">Year of passing</span>
+                </div>
+                <div class="form-group">
+                    <div class="label-container">
+                        <label class="field-label">Academic Score<span class="required-star">*</span></label>
+                        <div class="toggle-container">
+                            <div class="toggle-btn active" onclick="setScoreMode('%', this)">%</div>
+                            <div class="toggle-btn" onclick="setScoreMode('CGPA', this)">CGPA</div>
+                        </div>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="text" class="field-input" placeholder="Percentage % or CGPA" required>
+                        <span class="success-icon">✓</span>
+                    </div>
+                    <span class="helper-text">Minimum 60% or 6.5 CGPA required</span>
+                </div>
+
+                <!-- Row 5 -->
+                <div class="form-group">
+                    <label class="field-label">Screening Test Score<span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <input type="number" class="field-input" placeholder="0-100" required>
+                        <span class="success-icon">✓</span>
+                    </div>
+                    <span class="helper-text">Score from internal assessment</span>
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Interview Status<span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <select class="field-input" required>
+                            <option value="" disabled selected>Select status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Cleared">Cleared</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <span class="helper-text">Final interview panel result</span>
+                </div>
+
+                <!-- Row 6 -->
+                <div class="form-group full-width">
+                    <label class="field-label">Offer Letter Status<span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <select class="field-input" required>
+                            <option value="" disabled selected>Select status</option>
+                            <option value="Not Issued">Not Issued</option>
+                            <option value="Issued">Issued</option>
+                            <option value="Pending Signature">Pending Signature</option>
+                        </select>
+                    </div>
+                    <span class="helper-text">Current status of the offer document</span>
+                </div>
+
+                <button type="submit" id="submitBtn" class="submit-btn" disabled>
+                    <div class="spinner" id="btnSpinner"></div>
+                    <span id="btnText">Complete all required fields</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Panel 2: Audit Log -->
+        <div id="audit-log" class="panel">
+            <div class="placeholder-panel">
+                Audit log coming in Sprint 3
+            </div>
+        </div>
+
+        <!-- Panel 3: Rules Config -->
+        <div id="rules-config" class="panel">
+            <div class="placeholder-panel">
+                Rules config coming in Sprint 3
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        AdmitGuard v1.0 · Built with Google AI Studio · Data stored locally
+    </footer>
+
+    <script>
+        // Tab Switching
+        function switchTab(panelId, btn) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            
+            document.getElementById(panelId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // Form Progress and Score Logic
+        const form = document.getElementById('admissionForm');
+        const progressFill = document.getElementById('progress-fill');
+        const progressPercent = document.getElementById('progress-percent');
+        const eligibilityScore = document.getElementById('eligibility-score');
+        const strictPassed = document.getElementById('strict-passed');
+        const softChecked = document.getElementById('soft-checked');
+        const statusBadge = document.getElementById('status-badge');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+
+        const inputs = form.querySelectorAll('.field-input');
+        const totalFields = inputs.length;
+
+        function updateProgress() {
+            let filledCount = 0;
+            inputs.forEach(input => {
+                if (input.value.trim() !== '') {
+                    filledCount++;
+                }
+            });
+
+            const percentage = Math.round((filledCount / totalFields) * 100);
+            progressFill.style.width = percentage + '%';
+            progressPercent.innerText = percentage + '%';
+
+            // Update Eligibility Score (Mock logic for now)
+            const score = Math.round((filledCount / totalFields) * 100);
+            eligibilityScore.innerText = score;
+            
+            // Color logic for score
+            if (score >= 80) {
+                eligibilityScore.style.color = 'var(--success)';
+            } else if (score >= 50) {
+                eligibilityScore.style.color = 'var(--warning)';
+            } else if (score > 0) {
+                eligibilityScore.style.color = 'var(--danger)';
+            } else {
+                eligibilityScore.style.color = 'var(--text-muted)';
+            }
+
+            // Mock metric updates
+            const strict = Math.floor((filledCount / totalFields) * 7);
+            const soft = Math.floor((filledCount / totalFields) * 4);
+            strictPassed.innerText = strict;
+            softChecked.innerText = soft;
+
+            // Status Badge logic
+            if (filledCount === 0) {
+                statusBadge.innerText = 'Status: Incomplete';
+                statusBadge.style.color = 'var(--text-muted)';
+            } else if (filledCount < totalFields) {
+                statusBadge.innerText = 'Status: Warnings';
+                statusBadge.style.color = 'var(--warning)';
+            } else {
+                statusBadge.innerText = 'Status: Eligible';
+                statusBadge.style.color = 'var(--success)';
+            }
+
+            // Submit button state
+            if (filledCount === totalFields) {
+                submitBtn.disabled = false;
+                btnText.innerText = 'Submit Candidate Record';
+            } else {
+                submitBtn.disabled = true;
+                btnText.innerText = 'Complete all required fields';
+            }
+        }
+
+        inputs.forEach(input => {
+            input.addEventListener('input', updateProgress);
+            input.addEventListener('change', updateProgress);
+        });
+
+        // Score Mode Toggle
+        function setScoreMode(mode, btn) {
+            const container = btn.parentElement;
+            container.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const input = container.closest('.form-group').querySelector('.field-input');
+            if (mode === '%') {
+                input.placeholder = 'Percentage %';
+            } else {
+                input.placeholder = 'CGPA (e.g. 8.5)';
+            }
+        }
+
+        // Form Submission
+        function handleSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const spinner = document.getElementById('btnSpinner');
+            const text = document.getElementById('btnText');
+
+            btn.disabled = true;
+            spinner.style.display = 'block';
+            text.innerText = 'Processing...';
+
+            setTimeout(() => {
+                alert('Candidate record submitted successfully!');
+                btn.disabled = false;
+                spinner.style.display = 'none';
+                text.innerText = 'Submit Candidate Record';
+                form.reset();
+                updateProgress();
+            }, 2000);
+
+            return false;
+        }
+
+        // Initial call
+        updateProgress();
+    </script>
+</body>
+</html>
