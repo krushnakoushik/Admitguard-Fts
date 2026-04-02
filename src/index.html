@@ -996,25 +996,405 @@
             font-weight: 600;
         }
 
+        /* Rules Config Styles */
+        .rules-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .config-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .config-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .config-card-title {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .config-input-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .config-input-wrapper {
+            flex: 1;
+        }
+
+        .config-input {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 13px;
+            outline: none;
+        }
+
+        .config-input:focus {
+            border-color: var(--accent);
+        }
+
+        .config-save-btn {
+            padding: 10px 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .config-save-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .config-timestamp {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: -8px;
+        }
+
+        .chip-editor {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .editable-chip {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-primary);
+        }
+
+        .chip-remove {
+            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: 800;
+        }
+
+        .chip-remove:hover {
+            color: var(--danger);
+        }
+
+        .add-chip-btn {
+            background: transparent;
+            border: 1px dashed var(--text-muted);
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .add-chip-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .strict-rules-list {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .strict-rule-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--danger);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .strict-rule-info h4 {
+            font-family: var(--font-heading);
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .strict-rule-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .strict-badge {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        /* Toast System */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toast {
+            min-width: 300px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideInRight 0.3s ease forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.fade-out {
+            animation: slideOutRight 0.3s ease forwards;
+        }
+
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        .toast-icon {
+            font-size: 20px;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-message {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            width: 100%;
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.success .toast-progress { background: var(--success); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+        .toast.warning .toast-progress { background: var(--warning); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        .toast.error .toast-progress { background: var(--danger); }
+        .toast.info { border-left: 4px solid var(--accent); }
+        .toast.info .toast-progress { background: var(--accent); }
+
+        /* Draft Banner */
+        #draft-banner {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .draft-text {
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .draft-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .draft-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .draft-btn-restore { background: var(--accent); color: white; }
+        .draft-btn-discard { background: transparent; color: var(--text-secondary); }
+        .draft-btn-discard:hover { color: var(--danger); }
+
+        /* Clear Form Button */
+        .clear-form-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: -10px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .clear-form-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: 0.2s;
+        }
+
+        .clear-form-btn:hover {
+            color: var(--danger);
+        }
+
+        .clear-confirm-row {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--danger);
+        }
+
+        /* Storage Warning Banner */
+        #storage-warning {
+            background: rgba(245, 166, 35, 0.1);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+            padding: 10px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 13px;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Keyboard Hint */
+        .keyboard-hint {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            text-align: center;
+        }
+
         /* Responsive */
-        @media (max-width: 640px) {
-            .admission-form {
+        @media (max-width: 768px) {
+            .nav-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                max-width: 100%;
+                padding: 4px 12px;
+            }
+            .nav-tab {
+                flex-shrink: 0;
+            }
+            .rules-grid {
                 grid-template-columns: 1fr;
             }
-            .form-group.full-width {
-                grid-column: span 1;
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
             }
-            .submit-btn {
-                grid-column: span 1;
+            .stat-card:last-child {
+                grid-column: span 2;
             }
-            .score-card {
+            .filter-bar {
                 flex-direction: column;
-                gap: 20px;
+                align-items: stretch;
+            }
+            .results-count {
+                margin-left: 0;
                 text-align: center;
             }
-            .score-metrics {
-                justify-content: center;
-                max-width: 100%;
+            
+            /* Card stack layout for audit log on mobile */
+            .audit-table thead {
+                display: none;
+            }
+            .audit-table, .audit-table tbody, .audit-table tr, .audit-table td {
+                display: block;
+                width: 100%;
+            }
+            .audit-table tr {
+                margin-bottom: 16px;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: var(--bg-card);
+            }
+            .audit-table td {
+                text-align: right;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .audit-table td:last-child {
+                border-bottom: none;
+            }
+            .audit-table td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                text-transform: uppercase;
+                font-size: 10px;
+                color: var(--text-muted);
+                font-family: var(--font-heading);
             }
         }
     </style>
@@ -1039,7 +1419,21 @@
         </div>
     </nav>
 
+    <div id="toast-container"></div>
+
     <main class="main-content">
+        <!-- Storage Warning -->
+        <div id="storage-warning"></div>
+
+        <!-- Draft Banner -->
+        <div id="draft-banner">
+            <div class="draft-text">↩ Unsaved draft found from <span id="draft-time"></span>.</div>
+            <div class="draft-actions">
+                <button class="draft-btn draft-btn-restore" onclick="restoreDraft()">Restore Draft</button>
+                <button class="draft-btn draft-btn-discard" onclick="discardDraft()">Discard</button>
+            </div>
+        </div>
+
         <!-- Panel 1: New Entry -->
         <div id="new-entry" class="panel active">
             <header class="hero-header">
@@ -1064,6 +1458,17 @@
                     <div class="metric-chip">Soft Rules: <span id="soft-checked">0</span>/4 checked</div>
                     <div class="metric-chip">Exceptions: <span id="exceptions-used">0</span> used</div>
                     <div id="status-badge" class="metric-chip status-badge" style="color: var(--text-muted)">Status: Incomplete</div>
+                </div>
+            </div>
+
+            <div class="clear-form-container">
+                <button class="clear-form-btn" onclick="showClearConfirm()">Clear Form</button>
+            </div>
+            <div id="clear-confirm" class="clear-confirm-row">
+                <span>Are you sure you want to clear all fields? This cannot be undone.</span>
+                <div class="draft-actions">
+                    <button class="draft-btn draft-btn-restore" style="background: var(--danger)" onclick="clearForm()">Yes, Clear</button>
+                    <button class="draft-btn draft-btn-discard" onclick="hideClearConfirm()">Cancel</button>
                 </div>
             </div>
 
@@ -1206,6 +1611,7 @@
                     <div class="spinner" id="btnSpinner"></div>
                     <span id="btnText">Complete all required fields</span>
                 </button>
+                <div class="keyboard-hint">⌘ Enter to submit</div>
             </form>
         </div>
 
@@ -1286,9 +1692,32 @@
 
         <!-- Panel 3: Rules Config -->
         <div id="rules-config" class="panel">
-            <div class="placeholder-panel">
-                Rules config coming in Sprint 3
+            <header class="hero-header">
+                <span class="form-label-small">System Settings</span>
+                <h1 class="hero-title">Rules Configuration</h1>
+                <p class="hero-subtitle">Modify eligibility thresholds without touching code. Changes apply immediately to new submissions.</p>
+                
+                <div class="form-group" style="margin-top: 24px; max-width: 300px;">
+                    <label class="field-label">Current Cohort</label>
+                    <input type="text" id="config-cohort-name" class="field-input" oninput="updateCohortName(this.value)">
+                </div>
+            </header>
+
+            <h3 class="form-label-small">Soft Rules Editor</h3>
+            <div class="rules-grid" id="soft-rules-editor">
+                <!-- Soft rule cards injected by JS -->
             </div>
+
+            <h3 class="form-label-small" style="margin-top: 40px;">Exception Configuration</h3>
+            <div class="config-card" id="exception-config-editor">
+                <!-- Exception config injected by JS -->
+            </div>
+
+            <h3 class="form-label-small" style="margin-top: 40px;">Strict Rules (Read-Only)</h3>
+            <div class="strict-rules-list" id="strict-rules-display">
+                <!-- Strict rules injected by JS -->
+            </div>
+            <p class="helper-text" style="margin-top: 16px; text-align: center;">Note: Strict rules are hardcoded and cannot be modified from this panel.</p>
         </div>
     </main>
 
@@ -1342,7 +1771,7 @@
 
     <script>
         // PART A — RULES CONFIGURATION OBJECT
-        const RULES_CONFIG = {
+        const DEFAULT_RULES = {
           cohort: "Cohort-2025",
           version: "1.0",
           strict: [
@@ -1379,13 +1808,62 @@
           }
         };
 
+        // Load Rules from Storage or use Default
+        let RULES_CONFIG = JSON.parse(localStorage.getItem('admitguard_rules') || JSON.stringify(DEFAULT_RULES));
+
         // State
-        let auditRecords = JSON.parse(localStorage.getItem('admitguard_records') || '[]');
+        let auditRecords = [];
+        let isPrivateMode = false;
+
+        try {
+            auditRecords = JSON.parse(localStorage.getItem('admitguard_records') || '[]');
+        } catch (e) {
+            isPrivateMode = true;
+            console.warn("LocalStorage unavailable - falling back to in-memory storage.");
+        }
+
         let submittedEmails = auditRecords.map(r => r.fields.email);
         let currentScoreMode = "pct";
-        let fieldStates = {}; // Stores { passed: bool, isException: bool, rationaleValid: bool }
+        let fieldStates = {}; 
         let currentScore = 0;
         let overlayTimeout = null;
+        let draftInterval = null;
+
+        // Toast System
+        function showToast(message, type = "info") {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: '✓',
+                warning: '⚠',
+                error: '✕',
+                info: 'ℹ'
+            };
+
+            toast.innerHTML = `
+                <div class="toast-icon">${icons[type]}</div>
+                <div class="toast-content">
+                    <div class="toast-message">${message}</div>
+                </div>
+                <div class="toast-progress"></div>
+            `;
+
+            container.appendChild(toast);
+
+            // Limit to 3 toasts
+            const toasts = container.querySelectorAll('.toast');
+            if (toasts.length > 3) {
+                toasts[0].classList.add('fade-out');
+                setTimeout(() => toasts[0].remove(), 300);
+            }
+
+            setTimeout(() => {
+                toast.classList.add('fade-out');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
 
         // Tab Switching
         function switchTab(panelId, btn) {
@@ -1397,6 +1875,8 @@
 
             if (panelId === 'audit-log') {
                 renderAuditLog();
+            } else if (panelId === 'rules-config') {
+                renderRulesConfig();
             }
         }
 
@@ -1422,30 +1902,47 @@
             
             if (!group || !input) return;
 
+            // Edge Case Handling: Sanitization
+            let cleanValue = value;
+            if (fieldName === 'phone' || fieldName === 'aadhaar') {
+                cleanValue = value.replace(/[\s-]/g, '');
+            } else if (fieldName === 'email') {
+                cleanValue = value.trim().toLowerCase();
+            } else if (fieldName === 'name') {
+                cleanValue = value.trim();
+            }
+
             let error = null;
             let warning = null;
 
             // Strict Rules
             if (strictRule) {
-                if (!value && strictRule.type !== "not_value") {
-                    // Required check implicit for most strict
+                if (!cleanValue && strictRule.type !== "not_value") {
+                    // Required check implicit
+                } else if (fieldName === 'name' && cleanValue === '') {
+                    error = "Name cannot be empty or just spaces.";
                 } else if (strictRule.type === "regex") {
                     const re = new RegExp(strictRule.pattern);
-                    if (!re.test(value)) error = strictRule.message;
+                    if (!re.test(cleanValue)) error = strictRule.message;
+                    
+                    // Aadhaar specific: all same digit check
+                    if (fieldName === 'aadhaar' && cleanValue.length === 12) {
+                        if (/^(.)\1+$/.test(cleanValue)) error = "Invalid Aadhaar: Cannot be all same digits.";
+                    }
                 } else if (strictRule.type === "email") {
                     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!re.test(value)) {
+                    if (!re.test(cleanValue)) {
                         error = strictRule.message;
-                    } else if (isBlur && submittedEmails.includes(value)) {
-                        error = `⚠ This email was already submitted on ${new Date().toLocaleDateString()}. Duplicate entries are not allowed.`;
+                    } else if (isBlur && submittedEmails.includes(cleanValue)) {
+                        error = `⚠ This email was already submitted. Duplicate entries are not allowed.`;
                     }
                 } else if (strictRule.type === "required") {
-                    if (!value) error = strictRule.message;
+                    if (!cleanValue) error = strictRule.message;
                 } else if (strictRule.type === "not_value") {
-                    if (value === strictRule.blocked_value) error = strictRule.message;
+                    if (cleanValue === strictRule.blocked_value) error = strictRule.message;
                 } else if (strictRule.type === "conditional") {
                     const dependencyValue = document.getElementById(strictRule.depends_on).value;
-                    if (dependencyValue !== strictRule.required_value && value && value !== "Not Issued") {
+                    if (dependencyValue !== strictRule.required_value && cleanValue && cleanValue !== "Not Issued") {
                         error = strictRule.message;
                     }
                 }
@@ -1453,9 +1950,15 @@
 
             // Soft Rules (only if no strict error)
             if (!error && softRule) {
-                if (value) {
-                    const num = parseFloat(value);
-                    if (softRule.type === "range") {
+                if (cleanValue) {
+                    const num = parseFloat(cleanValue);
+                    
+                    // Edge Case: Whole number checks
+                    if (fieldName === 'age' && !Number.isInteger(num)) {
+                        warning = "Age must be a whole number.";
+                    } else if (fieldName === 'grad_year' && (cleanValue.length !== 4 || !Number.isInteger(num))) {
+                        warning = "Graduation year must be a 4-digit number.";
+                    } else if (softRule.type === "range") {
                         if (num < softRule.min || num > softRule.max) warning = softRule.message;
                     } else if (softRule.type === "threshold") {
                         if (fieldName === "score") {
@@ -1464,6 +1967,8 @@
                             } else {
                                 if (num < softRule.min_cgpa || num > 10) warning = softRule.message;
                             }
+                        } else if (fieldName === "test_score") {
+                            if (num < softRule.min || num > 100) warning = softRule.message;
                         } else {
                             if (num < softRule.min || num > softRule.max) warning = softRule.message;
                         }
@@ -1739,6 +2244,161 @@
             }
         }
 
+        // Rules Config Rendering
+        function renderRulesConfig() {
+            document.getElementById('config-cohort-name').value = RULES_CONFIG.cohort;
+
+            // Soft Rules
+            const softEditor = document.getElementById('soft-rules-editor');
+            softEditor.innerHTML = RULES_CONFIG.soft.map((rule, idx) => {
+                let inputs = '';
+                if (rule.type === 'range') {
+                    inputs = `
+                        <div class="config-input-group">
+                            <div class="config-input-wrapper">
+                                <label class="field-label">Min ${rule.field}</label>
+                                <input type="number" class="config-input" id="conf-${rule.field}-min" value="${rule.min}">
+                            </div>
+                            <div class="config-input-wrapper">
+                                <label class="field-label">Max ${rule.field}</label>
+                                <input type="number" class="config-input" id="conf-${rule.field}-max" value="${rule.max}">
+                            </div>
+                        </div>
+                    `;
+                } else if (rule.type === 'threshold') {
+                    if (rule.field === 'score') {
+                        inputs = `
+                            <div class="config-input-group">
+                                <div class="config-input-wrapper">
+                                    <label class="field-label">Min %</label>
+                                    <input type="number" class="config-input" id="conf-score-min_pct" value="${rule.min_pct}">
+                                </div>
+                                <div class="config-input-wrapper">
+                                    <label class="field-label">Min CGPA</label>
+                                    <input type="number" step="0.1" class="config-input" id="conf-score-min_cgpa" value="${rule.min_cgpa}">
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        inputs = `
+                            <div class="config-input-group">
+                                <div class="config-input-wrapper">
+                                    <label class="field-label">Min Score</label>
+                                    <input type="number" class="config-input" id="conf-${rule.field}-min" value="${rule.min}">
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+
+                return `
+                    <div class="config-card">
+                        <div class="config-card-header">
+                            <div class="config-card-title">${rule.field.charAt(0).toUpperCase() + rule.field.slice(1).replace('_', ' ')}</div>
+                            <button class="config-save-btn" onclick="saveSoftRule('${rule.field}')">Save</button>
+                        </div>
+                        ${inputs}
+                        <div class="config-timestamp" id="ts-${rule.field}">Last updated: never</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Exception Config
+            const excEditor = document.getElementById('exception-config-editor');
+            excEditor.innerHTML = `
+                <div class="config-input-group">
+                    <div class="config-input-wrapper">
+                        <label class="field-label">Min Rationale Length</label>
+                        <input type="number" class="config-input" id="conf-exc-min-len" value="${RULES_CONFIG.exception.min_rationale_length}">
+                    </div>
+                    <div class="config-input-wrapper">
+                        <label class="field-label">Max Exceptions Before Flag</label>
+                        <input type="number" class="config-input" id="conf-exc-max" value="${RULES_CONFIG.exception.max_exceptions_before_flag}">
+                    </div>
+                </div>
+                <div>
+                    <label class="field-label" style="margin-bottom:8px; display:block">Required Keywords</label>
+                    <div class="chip-editor" id="keyword-chip-editor">
+                        ${RULES_CONFIG.exception.required_keywords.map(kw => `
+                            <div class="editable-chip">
+                                ${kw} <span class="chip-remove" onclick="removeKeyword('${kw}')">×</span>
+                            </div>
+                        `).join('')}
+                        <button class="add-chip-btn" onclick="addKeyword()">+ Add keyword</button>
+                    </div>
+                </div>
+                <button class="config-save-btn" style="align-self: flex-start;" onclick="saveExceptionRules()">Save Exception Rules</button>
+            `;
+
+            // Strict Rules
+            const strictDisplay = document.getElementById('strict-rules-display');
+            strictDisplay.innerHTML = RULES_CONFIG.strict.map(rule => `
+                <div class="strict-rule-card">
+                    <div class="strict-rule-info">
+                        <h4>${rule.field.charAt(0).toUpperCase() + rule.field.slice(1).replace('_', ' ')}</h4>
+                        <p>${rule.message}</p>
+                    </div>
+                    <div class="strict-badge">Strict</div>
+                </div>
+            `).join('');
+        }
+
+        function updateCohortName(val) {
+            RULES_CONFIG.cohort = val;
+            saveRulesToStorage();
+        }
+
+        function saveSoftRule(field) {
+            const rule = RULES_CONFIG.soft.find(r => r.field === field);
+            if (!rule) return;
+
+            if (rule.type === 'range') {
+                const min = parseInt(document.getElementById(`conf-${field}-min`).value);
+                const max = parseInt(document.getElementById(`conf-${field}-max`).value);
+                if (min >= max) {
+                    showToast("Min value cannot exceed Max value", "error");
+                    return;
+                }
+                rule.min = min;
+                rule.max = max;
+            } else if (rule.type === 'threshold') {
+                if (field === 'score') {
+                    rule.min_pct = parseInt(document.getElementById('conf-score-min_pct').value);
+                    rule.min_cgpa = parseFloat(document.getElementById('conf-score-min_cgpa').value);
+                } else {
+                    rule.min = parseInt(document.getElementById(`conf-${field}-min`).value);
+                }
+            }
+
+            document.getElementById(`ts-${field}`).innerText = `Last updated: just now`;
+            saveRulesToStorage();
+            showToast(`✓ Rule updated — applies to new submissions`, "success");
+        }
+
+        function saveExceptionRules() {
+            RULES_CONFIG.exception.min_rationale_length = parseInt(document.getElementById('conf-exc-min-len').value);
+            RULES_CONFIG.exception.max_exceptions_before_flag = parseInt(document.getElementById('conf-exc-max').value);
+            saveRulesToStorage();
+            showToast(`✓ Exception rules updated`, "success");
+        }
+
+        function removeKeyword(kw) {
+            RULES_CONFIG.exception.required_keywords = RULES_CONFIG.exception.required_keywords.filter(k => k !== kw);
+            renderRulesConfig();
+        }
+
+        function addKeyword() {
+            const kw = prompt("Enter new required keyword:");
+            if (kw && kw.trim()) {
+                RULES_CONFIG.exception.required_keywords.push(kw.trim());
+                renderRulesConfig();
+            }
+        }
+
+        function saveRulesToStorage() {
+            localStorage.setItem('admitguard_rules', JSON.stringify(RULES_CONFIG));
+        }
+
         // PART E — SCORE FIELD SPECIAL HANDLING
         function setScoreMode(mode, btn) {
             const container = btn.parentElement;
@@ -1870,7 +2530,10 @@
             setTimeout(() => {
                 // Save to localStorage
                 auditRecords.unshift(record);
-                localStorage.setItem('admitguard_records', JSON.stringify(auditRecords));
+                if (!isPrivateMode) {
+                    localStorage.setItem('admitguard_records', JSON.stringify(auditRecords));
+                    localStorage.removeItem('admitguard_draft');
+                }
                 submittedEmails.push(record.fields.email);
 
                 // Show Success Overlay
@@ -1879,7 +2542,9 @@
                 btn.disabled = false;
                 spinner.style.display = 'none';
                 text.innerText = 'Submit Candidate Record';
-            }, 1500);
+                
+                checkStorageLimits();
+            }, 800);
 
             return false;
         }
@@ -1911,7 +2576,21 @@
 
         function resetFormAndCloseOverlay() {
             document.getElementById('success-overlay').style.display = 'none';
+            clearForm(true);
+            if (overlayTimeout) clearTimeout(overlayTimeout);
+        }
+
+        function viewAuditLogFromOverlay() {
+            document.getElementById('success-overlay').style.display = 'none';
+            switchTab('audit-log', document.querySelectorAll('.nav-tab')[1]);
+            if (overlayTimeout) clearTimeout(overlayTimeout);
+        }
+
+        function clearForm(silent = false) {
+            if (!silent && !confirm("Are you sure you want to clear all fields? This cannot be undone.")) return;
+            
             document.getElementById('admissionForm').reset();
+            hideClearConfirm();
             
             // Clear exception UIs
             document.querySelectorAll('.exception-section').forEach(el => el.remove());
@@ -1924,16 +2603,99 @@
             document.querySelectorAll('.form-group').forEach(g => {
                 g.classList.remove('field-error', 'field-success', 'field-warning');
             });
+
+            // Re-lock offer letter
+            handleSpecialBehaviors('interview', '');
             
             calculateEligibilityScore();
             updateProgress();
-            if (overlayTimeout) clearTimeout(overlayTimeout);
+            
+            if (!isPrivateMode) localStorage.removeItem('admitguard_draft');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (!silent) showToast("Form cleared", "info");
         }
 
-        function viewAuditLogFromOverlay() {
-            document.getElementById('success-overlay').style.display = 'none';
-            switchTab('audit-log', document.querySelectorAll('.nav-tab')[1]);
-            if (overlayTimeout) clearTimeout(overlayTimeout);
+        function showClearConfirm() {
+            document.getElementById('clear-confirm').style.display = 'flex';
+        }
+
+        function hideClearConfirm() {
+            document.getElementById('clear-confirm').style.display = 'none';
+        }
+
+        // Draft Management
+        function saveDraft() {
+            if (isPrivateMode) return;
+            
+            const form = document.getElementById('admissionForm');
+            const formData = new FormData(form);
+            const data = {};
+            let hasValue = false;
+            
+            formData.forEach((value, key) => {
+                data[key] = value;
+                if (value.trim() !== '') hasValue = true;
+            });
+
+            if (hasValue) {
+                const draft = {
+                    data,
+                    timestamp: new Date().toLocaleString(),
+                    scoreMode: currentScoreMode
+                };
+                localStorage.setItem('admitguard_draft', JSON.stringify(draft));
+            }
+        }
+
+        function checkDraft() {
+            if (isPrivateMode) return;
+            const draft = JSON.parse(localStorage.getItem('admitguard_draft'));
+            if (draft) {
+                document.getElementById('draft-time').innerText = draft.timestamp;
+                document.getElementById('draft-banner').style.display = 'flex';
+            }
+        }
+
+        function restoreDraft() {
+            const draft = JSON.parse(localStorage.getItem('admitguard_draft'));
+            if (draft) {
+                setScoreMode(draft.scoreMode === 'pct' ? '%' : 'CGPA', document.getElementById(draft.scoreMode === 'pct' ? 'toggle-pct' : 'toggle-cgpa'));
+                
+                for (const key in draft.data) {
+                    const input = document.getElementById(key);
+                    if (input) {
+                        input.value = draft.data[key];
+                        validateField(key, draft.data[key]);
+                    }
+                }
+                showToast("Draft restored", "success");
+            }
+            discardDraft();
+        }
+
+        function discardDraft() {
+            document.getElementById('draft-banner').style.display = 'none';
+            if (!isPrivateMode) localStorage.removeItem('admitguard_draft');
+        }
+
+        // Storage Management
+        function checkStorageLimits() {
+            if (isPrivateMode) {
+                const banner = document.getElementById('storage-warning');
+                banner.innerHTML = `<span>ℹ</span> Storage unavailable in private mode. Records will be lost on page close. Export CSV to save.`;
+                banner.style.display = 'flex';
+                return;
+            }
+
+            if (auditRecords.length >= 500) {
+                const banner = document.getElementById('storage-warning');
+                banner.innerHTML = `<span>⚠</span> Audit log has ${auditRecords.length} records. Consider exporting and clearing old records to maintain performance.`;
+                banner.style.display = 'flex';
+                banner.style.background = 'rgba(245, 166, 35, 0.1)';
+                banner.style.borderColor = 'var(--warning)';
+                banner.style.color = 'var(--warning)';
+            }
         }
 
         // Audit Log Rendering & Logic
@@ -2006,13 +2768,13 @@
 
                 html += `
                     <tr>
-                        <td style="color: var(--text-secondary); font-size: 12px;">${formattedDate}</td>
-                        <td style="font-weight: 600;">${r.fields.name}</td>
-                        <td style="color: var(--text-secondary);">${r.fields.email}</td>
-                        <td><span class="badge ${scoreClass}">${r.eligibilityScore}</span></td>
-                        <td><span class="badge ${excClass}">${excCount} exceptions</span></td>
-                        <td><span class="badge ${statusClass}">${statusText}</span></td>
-                        <td><button class="view-btn" onclick="viewRecord('${r.id}')">View</button></td>
+                        <td data-label="Timestamp" style="color: var(--text-secondary); font-size: 12px;">${formattedDate}</td>
+                        <td data-label="Candidate" style="font-weight: 600;">${r.fields.name}</td>
+                        <td data-label="Email" style="color: var(--text-secondary);">${r.fields.email}</td>
+                        <td data-label="Score"><span class="badge ${scoreClass}">${r.eligibilityScore}</span></td>
+                        <td data-label="Exceptions"><span class="badge ${excClass}">${excCount} exceptions</span></td>
+                        <td data-label="Status"><span class="badge ${statusClass}">${statusText}</span></td>
+                        <td data-label="Actions"><button class="view-btn" onclick="viewRecord('${r.id}')">View</button></td>
                     </tr>
                 `;
             });
@@ -2120,9 +2882,10 @@
         function clearAllRecords() {
             if (confirm("Are you sure you want to clear all audit records? This action cannot be undone.")) {
                 auditRecords = [];
-                localStorage.setItem('admitguard_records', JSON.stringify([]));
+                if (!isPrivateMode) localStorage.setItem('admitguard_records', JSON.stringify([]));
                 submittedEmails = [];
                 renderAuditLog();
+                showToast("All records cleared", "warning");
             }
         }
 
@@ -2134,6 +2897,7 @@
             document.body.appendChild(downloadAnchorNode);
             downloadAnchorNode.click();
             downloadAnchorNode.remove();
+            showToast("JSON exported", "success");
         }
 
         function exportCSV() {
@@ -2182,11 +2946,28 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            showToast("CSV exported", "success");
         }
+
+        // Keyboard Shortcuts
+        window.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                const btn = document.getElementById('submitBtn');
+                if (!btn.disabled) handleSubmit(new Event('submit'));
+            }
+            if (e.key === 'Escape') {
+                closeModal();
+                document.getElementById('success-overlay').style.display = 'none';
+            }
+        });
 
         // Initial call
         calculateEligibilityScore();
         updateProgress();
+        checkDraft();
+        checkStorageLimits();
+        
+        draftInterval = setInterval(saveDraft, 5000);
     </script>
 </body>
 </html>
