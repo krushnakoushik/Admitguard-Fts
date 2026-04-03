@@ -1,24 +1,24 @@
 # Research Notes — AdmitGuard
 
-**Author:** Koushik  
-**Date:** April 2025  
+**Author:** Koushik
+**Date:** April 2025
 
 ---
 
 ## The Problem
 
-The current admission pipeline at FTS uses an unstructured Google Sheet 
-for candidate data entry. There is zero validation at the point of entry — 
+The current admission pipeline at FTS uses an unstructured Google Sheet
+for candidate data entry. There is zero validation at the point of entry —
 anyone can type anything into any field.
 
 This causes a critical operational failure:
 
 - Ineligible candidates enter the pipeline undetected
-- Errors compound silently across 5 stages — Counselor Verification, 
+- Errors compound silently across 5 stages — Counselor Verification,
   Screening Test, Interview, Document Verification, Final Enrollment
-- Ineligible candidates are only caught at Document Verification — 
+- Ineligible candidates are only caught at Document Verification —
   after both the company and candidate have already invested significant time
-- This wastes 40+ hours per cohort on candidates who should never 
+- This wastes 40+ hours per cohort on candidates who should never
   have passed the first stage
 
 ---
@@ -38,13 +38,13 @@ This causes a critical operational failure:
 ## Root Causes Identified
 
 1. **No enforcement at entry** — Google Sheets accepts any value in any field
-2. **Knowledge gap** — Counselors and ops staff don't always know 
+2. **Knowledge gap** — Counselors and ops staff don't always know
    the exact IIT eligibility criteria
-3. **Silent compounding** — Invalid data moves through the pipeline 
+3. **Silent compounding** — Invalid data moves through the pipeline
    without triggering any alert
-4. **No exception documentation** — Borderline cases get approved verbally 
+4. **No exception documentation** — Borderline cases get approved verbally
    with no written record of who approved what and why
-5. **Rigid update process** — Changing eligibility rules requires editing 
+5. **Rigid update process** — Changing eligibility rules requires editing
    the spreadsheet manually, risking formula breaks
 
 ---
@@ -63,20 +63,49 @@ Replace the Google Sheet with a form-based web application that:
 
 ## Key Insights from Analysis
 
-- The problem is not the people — it is the tool. Excel was never 
+- The problem is not the people — it is the tool. Excel was never
   designed for enforced data validation in an operational pipeline.
-- Two types of rules are needed: strict (zero tolerance) and soft 
+- Two types of rules are needed: strict (zero tolerance) and soft
   (overridable with documented rationale)
-- The exception system is as important as the validation itself — 
+- The exception system is as important as the validation itself —
   borderline cases exist in every cohort and need a legitimate path forward
 - Audit trail is non-negotiable for institutional compliance
+
+---
+
+## Self-Directed Research Findings
+
+### Why form validation at entry point matters
+Catching bad data at the source is 10x cheaper than catching it
+downstream. Every stage an ineligible candidate passes through
+multiplies the wasted effort — counselor time, test resources,
+interviewer time, document collection — all before the actual
+rejection happens.
+
+### localStorage as a lightweight audit store
+For a client-side tool without backend infrastructure, localStorage
+provides up to 5–10MB of persistent storage per domain. Sufficient
+for hundreds of admission records. Falls back gracefully in
+private browsing mode with in-memory storage.
+
+### Exception documentation as compliance mechanism
+Structured exception rationales with required keywords create
+an accountability trail. The keyword requirement ("approved by",
+"waiver granted") forces operators to attribute the override to
+a named authority — turning a workaround into a documented decision.
+
+### Configurable rules as ops enablement
+Storing eligibility thresholds in a JSON config rather than
+hardcoded JS means the operations team can update criteria
+between cohorts without filing a development request. This
+directly addresses the "rules change between cohorts" pain point.
 
 ---
 
 ## References
 
 - Project brief: AdmitGuard_Project_Walkthrough.pptx
-- Admission pipeline stages: Application → Counselor Verification → 
+- Admission pipeline stages: Application → Counselor Verification →
   Screening Test → Interview → Doc Verification → Final Enrollment
-- Eligibility criteria: Age 18–35, Grad Year 2015–2025, 
+- Eligibility criteria: Age 18–35, Grad Year 2015–2025,
   Score ≥60% or CGPA ≥6.0, Test Score ≥40/100

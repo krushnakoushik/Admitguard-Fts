@@ -1440,6 +1440,14 @@
 
         <!-- Panel 1: New Entry -->
         <div id="new-entry" class="panel active">
+            <!-- Rules Loading Banner -->
+            <div id="rules-loading-banner" class="storage-warning" style="display: flex; background: var(--bg-elevated); border-color: var(--accent); color: var(--accent);">
+                <span>⏳</span> Loading rules configuration...
+            </div>
+            <div id="rules-fallback-banner" class="storage-warning" style="display: none; background: rgba(245, 166, 35, 0.1); border-color: var(--warning); color: var(--warning);">
+                <span>⚠</span> Using default rules — rules.json could not be loaded
+                <button class="draft-btn-discard" style="margin-left: auto; font-size: 14px; background: none; border: none; color: inherit; cursor: pointer;" onclick="this.parentElement.style.display='none'">×</button>
+            </div>
             <header class="hero-header">
                 <span class="form-label-small">Admission Form</span>
                 <h1 class="hero-title">Candidate Entry</h1>
@@ -1844,45 +1852,124 @@
 
     <script>
         // PART A — RULES CONFIGURATION OBJECT
-        const DEFAULT_RULES = {
-          cohort: "Cohort-2025",
-          version: "1.0",
-          strict: [
-            { field: "name", type: "regex", pattern: "^[a-zA-Z\\s]{2,}$", message: "Min 2 characters. No numbers or special characters allowed." },
-            { field: "email", type: "email", unique: true, message: "Must be a valid email format. Duplicates are not allowed." },
-            { field: "phone", type: "regex", pattern: "^[6-9]\\d{9}$", message: "Must be exactly 10 digits and start with 6, 7, 8, or 9." },
-            { field: "aadhaar", type: "regex", pattern: "^\\d{12}$", message: "Must be exactly 12 digits. No spaces or letters." },
-            { field: "qualification", type: "required", message: "Please select a qualification from the dropdown." },
-            { field: "interview", type: "not_value", blocked_value: "Rejected", message: "Candidate status is Rejected. Submission is blocked." },
-            { field: "offer_letter", type: "conditional", depends_on: "interview", required_value: "Cleared", message: "Offer Letter can only be issued after interview is cleared." }
-          ],
-          soft: [
-            { field: "age", type: "range", min: 18, max: 35, message: "Age should be between 18–35 years." },
-            { field: "grad_year", type: "range", min: 2015, max: 2025, message: "Graduation year should be between 2015–2025." },
-            { field: "score", type: "threshold", min_pct: 60, min_cgpa: 6.0, message: "Score should be ≥60% or ≥6.0 CGPA." },
-            { field: "test_score", type: "threshold", min: 40, max: 100, message: "Screening test score should be ≥40 out of 100." }
-          ],
-          exception: {
-            min_rationale_length: 30,
-            required_keywords: ["approved by", "special case", "documentation pending", "waiver granted"],
-            max_exceptions_before_flag: 2
-          }
-        };
+        let RULES_CONFIG = null;
 
-        // Load Rules from Storage or use Default
-        let RULES_CONFIG = JSON.parse(localStorage.getItem('admitguard_rules') || JSON.stringify(DEFAULT_RULES));
+        function getDefaultRules() {
+            return {
+                cohort: "Cohort-2025",
+                version: "1.0",
+                strict: [
+                    { field: "name",         type: "regex",    pattern: "^[a-zA-Z\\s]{2,}$",    
+                      message: "Min 2 characters. No numbers or special characters allowed." },
+                    { field: "email",        type: "email",    unique: true,                      
+                      message: "Must be a valid email format. Duplicates are not allowed." },
+                    { field: "phone",        type: "regex",    pattern: "^[6-9]\\d{9}$",        
+                      message: "Must be exactly 10 digits and start with 6, 7, 8, or 9." },
+                    { field: "aadhaar",      type: "regex",    pattern: "^\\d{12}$",            
+                      message: "Must be exactly 12 digits. No spaces or letters." },
+                    { field: "qualification", type: "required",                                   
+                      message: "Please select a qualification from the dropdown." },
+                    { field: "interview",    type: "not_value", blocked_value: "Rejected",        
+                      message: "Candidate status is Rejected. Submission is blocked." },
+                    { field: "offer_letter", type: "conditional", depends_on: "interview", required_value: "Cleared",
+                      message: "Offer Letter can only be issued after interview is cleared." }
+                ],
+                soft: [
+                    { field: "age",          type: "range",    min: 18, max: 35,                
+                      message: "Age should be between 18–35 years." },
+                    { field: "grad_year",    type: "range",    min: 2015, max: 2025,            
+                      message: "Graduation year should be between 2015–2025." },
+                    { field: "score",        type: "threshold", min_pct: 60, min_cgpa: 6.0,      
+                      message: "Score should be ≥60% or ≥6.0 CGPA." },
+                    { field: "test_score",   type: "threshold", min: 40, max: 100,              
+                      message: "Screening test score should be ≥40 out of 100." }
+                ],
+                exception: {
+                    min_rationale_length: 30,
+                    required_keywords: ["approved by", "special case", "documentation pending", "waiver granted"],
+                    max_exceptions_before_flag: 2
+                }
+            };
+        }
+
+        /**
+         * loadRules()
+         * Fetches rules from config/rules.json.
+         * Local double-click -> uses built-in default rules (fallback due to CORS)
+         * GitHub Pages deployed -> reads from rules.json (live config)
+         */
+        async function loadRules() {
+            const loadingBanner = document.getElementById('rules-loading-banner');
+            const fallbackBanner = document.getElementById('rules-fallback-banner');
+            
+            try {
+                const response = await fetch('../config/rules.json');
+                if (!response.ok) throw new Error('Failed to load rules');
+                RULES_CONFIG = await response.json();
+                console.log('Rules loaded from config:', RULES_CONFIG.version);
+                if (loadingBanner) loadingBanner.style.display = 'none';
+            } catch (error) {
+                console.warn('Could not load rules.json, using defaults:', error);
+                RULES_CONFIG = getDefaultRules();
+                if (loadingBanner) loadingBanner.style.display = 'none';
+                if (fallbackBanner) fallbackBanner.style.display = 'flex';
+            }
+            initApp();
+        }
+
+        function initApp() {
+            // Load records
+            try {
+                auditRecords = JSON.parse(localStorage.getItem('admitguard_records') || '[]');
+            } catch (e) {
+                isPrivateMode = true;
+            }
+            submittedEmails = auditRecords.map(r => r.fields.email);
+
+            // Setup Event Listeners
+            setupEventListeners();
+
+            // Initial UI State
+            calculateEligibilityScore();
+            updateProgress();
+            checkDraft();
+            checkStorageLimits();
+            
+            // Start draft interval
+            if (draftInterval) clearInterval(draftInterval);
+            draftInterval = setInterval(saveDraft, 5000);
+        }
+
+        function setupEventListeners() {
+            const debouncedValidate = debounce((name, val) => validateField(name, val), 300);
+
+            document.querySelectorAll('.field-input').forEach(input => {
+                const name = input.getAttribute('data-field');
+                input.addEventListener('input', (e) => {
+                    debouncedValidate(name, e.target.value);
+                });
+                input.addEventListener('blur', (e) => {
+                    validateField(name, e.target.value, true);
+                });
+            });
+
+            // Keyboard Shortcuts
+            window.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    const btn = document.getElementById('submitBtn');
+                    if (!btn.disabled) handleSubmit(new Event('submit'));
+                }
+                if (e.key === 'Escape') {
+                    closeModal();
+                    document.getElementById('success-overlay').style.display = 'none';
+                }
+            });
+        }
 
         // State
         let auditRecords = [];
         let isPrivateMode = false;
-
-        try {
-            auditRecords = JSON.parse(localStorage.getItem('admitguard_records') || '[]');
-        } catch (e) {
-            isPrivateMode = true;
-        }
-
-        let submittedEmails = auditRecords.map(r => r.fields.email);
+        let submittedEmails = [];
         let currentScoreMode = "pct";
         let fieldStates = {}; 
         let currentScore = 0;
@@ -2306,11 +2393,8 @@
 
         // Rules Config Rendering
         function renderRulesConfig() {
-            document.getElementById('config-cohort-name').value = RULES_CONFIG.cohort;
-
             // Soft Rules
-            const softEditor = document.getElementById('soft-rules-editor');
-            softEditor.innerHTML = RULES_CONFIG.soft.map((rule, idx) => {
+            const softRulesHtml = RULES_CONFIG.soft.map((rule, idx) => {
                 let inputs = '';
                 if (rule.type === 'range') {
                     inputs = `
@@ -2364,48 +2448,89 @@
             }).join('');
 
             // Exception Config
-            const excEditor = document.getElementById('exception-config-editor');
-            excEditor.innerHTML = `
-                <div class="config-input-group">
-                    <div class="config-input-wrapper">
-                        <label class="field-label">Min Rationale Length</label>
-                        <input type="number" class="config-input" id="conf-exc-min-len" value="${RULES_CONFIG.exception.min_rationale_length}">
+            const exceptionRulesHtml = `
+                <div class="config-card" style="grid-column: span 2;">
+                    <div class="config-card-header">
+                        <div class="config-card-title">Exception Logic</div>
+                        <button class="config-save-btn" onclick="saveExceptionRules()">Save Exception Rules</button>
                     </div>
-                    <div class="config-input-wrapper">
-                        <label class="field-label">Max Exceptions Before Flag</label>
-                        <input type="number" class="config-input" id="conf-exc-max" value="${RULES_CONFIG.exception.max_exceptions_before_flag}">
+                    <div class="config-input-group">
+                        <div class="config-input-wrapper">
+                            <label class="field-label">Min Rationale Length</label>
+                            <input type="number" class="config-input" id="conf-exc-min-len" value="${RULES_CONFIG.exception.min_rationale_length}">
+                        </div>
+                        <div class="config-input-wrapper">
+                            <label class="field-label">Max Exceptions Before Flag</label>
+                            <input type="number" class="config-input" id="conf-exc-max" value="${RULES_CONFIG.exception.max_exceptions_before_flag}">
+                        </div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <label class="field-label" style="margin-bottom:8px; display:block">Required Keywords</label>
+                        <div class="chip-editor" id="keyword-chip-editor">
+                            ${RULES_CONFIG.exception.required_keywords.map(kw => `
+                                <div class="editable-chip">
+                                    ${kw} <span class="chip-remove" onclick="removeKeyword('${kw}')">×</span>
+                                </div>
+                            `).join('')}
+                            <button class="add-chip-btn" onclick="addKeyword()">+ Add keyword</button>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <label class="field-label" style="margin-bottom:8px; display:block">Required Keywords</label>
-                    <div class="chip-editor" id="keyword-chip-editor">
-                        ${RULES_CONFIG.exception.required_keywords.map(kw => `
-                            <div class="editable-chip">
-                                ${kw} <span class="chip-remove" onclick="removeKeyword('${kw}')">×</span>
-                            </div>
-                        `).join('')}
-                        <button class="add-chip-btn" onclick="addKeyword()">+ Add keyword</button>
-                    </div>
-                </div>
-                <button class="config-save-btn" style="align-self: flex-start;" onclick="saveExceptionRules()">Save Exception Rules</button>
             `;
 
             // Strict Rules
-            const strictDisplay = document.getElementById('strict-rules-display');
-            strictDisplay.innerHTML = RULES_CONFIG.strict.map(rule => `
-                <div class="strict-rule-card">
+            const strictRulesHtml = RULES_CONFIG.strict.map(rule => `
+                <div class="strict-rule-item">
                     <div class="strict-rule-info">
-                        <h4>${rule.field.charAt(0).toUpperCase() + rule.field.slice(1).replace('_', ' ')}</h4>
-                        <p>${rule.message}</p>
+                        <div class="strict-rule-name">${rule.field.charAt(0).toUpperCase() + rule.field.slice(1).replace('_', ' ')}</div>
+                        <div class="strict-rule-desc">${rule.message}</div>
                     </div>
                     <div class="strict-badge">Strict</div>
                 </div>
             `).join('');
+
+            const container = document.getElementById('rules-config');
+            container.innerHTML = `
+                <div class="conf-header">
+                    <div>
+                        <h2 style="font-family: 'Syne', sans-serif; font-weight: 700; font-size: 24px; color: var(--text-primary);">Rules Configuration</h2>
+                        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Modify eligibility thresholds without touching code. Changes apply immediately to this session.</p>
+                    </div>
+                    <div class="conf-cohort-box">
+                        <label>Current Cohort</label>
+                        <input type="text" value="${RULES_CONFIG.cohort}" onchange="updateCohortName(this.value)">
+                    </div>
+                </div>
+
+                <div class="conf-grid">
+                    ${softRulesHtml}
+                    ${exceptionRulesHtml}
+                </div>
+
+                <div id="rules-permanent-note" class="helper-text" style="margin-top: 24px; text-align: center; color: var(--warning); display: none; padding: 12px; background: rgba(245, 166, 35, 0.05); border-radius: 8px; border: 1px dashed var(--warning);">
+                    ✓ Rules updated in this session. To make permanent changes, update config/rules.json in the repository.
+                </div>
+
+                <div class="conf-header" style="margin-top: 40px;">
+                    <div>
+                        <h2 style="font-family: 'Syne', sans-serif; font-weight: 700; font-size: 20px; color: var(--text-primary);">Strict Rules (Read-Only)</h2>
+                        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Strict rules are core compliance requirements and cannot be modified via UI.</p>
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-muted); text-align: right;">
+                        Config Version: ${RULES_CONFIG.version}<br>
+                        <span id="config-timestamp">Last synced: ${new Date().toLocaleTimeString()}</span>
+                    </div>
+                </div>
+
+                <div class="conf-grid">
+                    ${strictRulesHtml}
+                </div>
+            `;
         }
 
         function updateCohortName(val) {
             RULES_CONFIG.cohort = val;
-            saveRulesToStorage();
+            document.getElementById('rules-permanent-note').style.display = 'block';
         }
 
         function saveSoftRule(field) {
@@ -2431,15 +2556,29 @@
             }
 
             document.getElementById(`ts-${field}`).innerText = `Last updated: just now`;
-            saveRulesToStorage();
-            showToast(`✓ Rule updated — applies to new submissions`, "success");
+            
+            // Re-validate fields to update UI instantly
+            const allFields = [
+                "name", "email", "phone", "aadhaar", "qualification", 
+                "age", "grad_year", "score", "test_score", "interview", "offer_letter"
+            ];
+            allFields.forEach(f => {
+                const input = document.getElementById(f);
+                if (input && input.value) {
+                    validateField(f, input.value);
+                }
+            });
+
+            showToast(`✓ Rule updated — applies to all fields now`, "success");
+            document.getElementById('rules-permanent-note').style.display = 'block';
         }
 
         function saveExceptionRules() {
             RULES_CONFIG.exception.min_rationale_length = parseInt(document.getElementById('conf-exc-min-len').value);
             RULES_CONFIG.exception.max_exceptions_before_flag = parseInt(document.getElementById('conf-exc-max').value);
-            saveRulesToStorage();
-            showToast(`✓ Exception rules updated`, "success");
+            
+            showToast(`✓ Exception rules updated — applies to all fields now`, "success");
+            document.getElementById('rules-permanent-note').style.display = 'block';
         }
 
         function removeKeyword(kw) {
@@ -3037,12 +3176,7 @@
         }
 
         // Initial call
-        calculateEligibilityScore();
-        updateProgress();
-        checkDraft();
-        checkStorageLimits();
-        
-        draftInterval = setInterval(saveDraft, 5000);
+        document.addEventListener('DOMContentLoaded', loadRules);
     </script>
     <!-- 
       AdmitGuard v1.0

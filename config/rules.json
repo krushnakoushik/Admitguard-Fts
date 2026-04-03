@@ -1,3 +1,24 @@
 {
-  "rules": []
+  "cohort": "Cohort-2025",
+  "version": "1.0",
+  "strict": [
+    { "field": "name", "type": "regex", "pattern": "^[a-zA-Z\\s]{2,}$", "message": "Min 2 characters. No numbers or special characters allowed." },
+    { "field": "email", "type": "email", "unique": true, "message": "Must be a valid email format. Duplicates are not allowed." },
+    { "field": "phone", "type": "regex", "pattern": "^[6-9]\\d{9}$", "message": "Must be exactly 10 digits and start with 6, 7, 8, or 9." },
+    { "field": "aadhaar", "type": "regex", "pattern": "^\\d{12}$", "message": "Must be exactly 12 digits. No spaces or letters." },
+    { "field": "qualification", "type": "required", "message": "Please select a qualification from the dropdown." },
+    { "field": "interview", "type": "not_value", "blocked_value": "Rejected", "message": "Candidate status is Rejected. Submission is blocked." },
+    { "field": "offer_letter", "type": "conditional", "depends_on": "interview", "required_value": "Cleared", "message": "Offer Letter can only be issued after interview is cleared." }
+  ],
+  "soft": [
+    { "field": "age", "type": "range", "min": 18, "max": 35, "message": "Age should be between 18–35 years." },
+    { "field": "grad_year", "type": "range", "min": 2015, "max": 2025, "message": "Graduation year should be between 2015–2025." },
+    { "field": "score", "type": "threshold", "min_pct": 60, "min_cgpa": 6.0, "message": "Score should be ≥60% or ≥6.0 CGPA." },
+    { "field": "test_score", "type": "threshold", "min": 40, "max": 100, "message": "Screening test score should be ≥40 out of 100." }
+  ],
+  "exception": {
+    "min_rationale_length": 30,
+    "required_keywords": ["approved by", "special case", "documentation pending", "waiver granted"],
+    "max_exceptions_before_flag": 2
+  }
 }
