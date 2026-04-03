@@ -11,7 +11,7 @@
     { "field": "offer_letter", "type": "conditional", "depends_on": "interview", "required_value": "Cleared", "message": "Offer Letter can only be issued after interview is cleared." }
   ],
   "soft": [
-    { "field": "age", "type": "range", "min": 20, "max": 35, "message": "Age should be between 18–35 years." },
+    { "field": "age", "type": "range", "min": 18, "max": 35, "message": "Age should be between 18–35 years." },
     { "field": "grad_year", "type": "range", "min": 2015, "max": 2025, "message": "Graduation year should be between 2015–2025." },
     { "field": "score", "type": "threshold", "min_pct": 60, "min_cgpa": 6.0, "message": "Score should be ≥60% or ≥6.0 CGPA." },
     { "field": "test_score", "type": "threshold", "min": 40, "max": 100, "message": "Screening test score should be ≥40 out of 100." }
